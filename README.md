@@ -1,18 +1,18 @@
 # To do
 
-## Convert .mp4 video to audio to .flac audio
+- Convert .mp4 video to audio to .flac audio
 
-## Transcribe audio file ✅
+- Transcribe audio file ✅
 
-## Summarize Transcription
+- Summarize Transcription
 
-## Frontend Design
+- Frontend Design
 
-## Youtube video downloader (Extra)
+- Youtube video downloader (Extra)
 
-## Transcription translation (Extra)
+- Transcription translation (Extra)
 
-## Documentation 🙄
+- Documentation 🙄
 
 
 # Getting Started

@@ -1,6 +1,8 @@
 "use client"
 import { useState } from 'react';
 import FilesDragAndDropButton from '@/components/FileDragAndRopButton/FileDragAndDropButton';
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
 
 export default function Summary() {
   const [transcription, setTranscription] = useState('');
@@ -11,22 +13,24 @@ export default function Summary() {
       const formData = new FormData();
       formData.append('audioFile', file);
       setProcessing(true);
+
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/summary/add`, {
           method: 'POST',
-          body: formData,
+          body: formData
         });
 
         const data = await response.json();
-        console.log('Upload successful:', data);
 
+        console.log('Upload successful:', data);
+        
         const transcribeText = data.data.transcription;
 
         setTranscription(transcribeText);
         setProcessing(false);
 
         } catch (error) {
-            console.error('Error uploading file:', error);
+            console.log('Error uploading file:', error);
             setProcessing(false);
         }
 
@@ -66,8 +70,7 @@ export default function Summary() {
       <section className='w-full container justify-center flex flex-wrap px-6 mt-10'>
 
         {processing ? <div className='w-full justify-center flex mb-5'> <span>Processing...</span> </div> : null}
-
-        
+  
         <div className="justify-center flex">
           <p>
             {transcription}

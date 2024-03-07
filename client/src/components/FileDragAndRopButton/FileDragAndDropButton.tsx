@@ -1,33 +1,31 @@
 import {useState, useEffect, useRef} from 'react';
 
-type FilesDragAndDropTypes = {
+type FilesDragAndDropButtonTypes = {
     onUpload : (arg0: File) => void,
     formats: string[],
     disabled: boolean
 }
 
-export default function FilesDragAndDrop({onUpload, formats, disabled}: FilesDragAndDropTypes) {
+export default function FilesDragAndDropButton({onUpload, formats, disabled}: FilesDragAndDropButtonTypes) {
     const [dragging, setDragging] = useState(false);
-
     const dropRef = useRef<HTMLButtonElement>(null);
-    const overlayRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     
-    const handleDragOver = (e) => {
+    const handleDragOver = (e:React.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
-      };
+    };
       
-    const handleChange = (e) => {
+    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
       if (!e.target.files) return;
 
       if (e.target.files.length > 0) {
-        const files =  [...e.target.files]
-        handleFile(files)         
+        const files = [...e.target.files]
+        handleFile(files);
       }
     }
 
-    const handleDrop = (e) => {
+    const handleDrop = (e:React.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
         setDragging(false);
@@ -39,22 +37,16 @@ export default function FilesDragAndDrop({onUpload, formats, disabled}: FilesDra
         }
       };
 
-      const handleDragEnter = (e) => {
+      const handleDragEnter = (e:React.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        
-        if (e.target !== overlayRef.current) {
-          setDragging(true);
-        }
+        setDragging(true);   
       };
       
-      const handleDragLeave = (e) => {
+      const handleDragLeave = (e:React.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        
-        if (e.target === overlayRef.current) {
-          setDragging(false);
-        }
+        setDragging(false);
       };
  
       const handleFile = (files: File[]) => {
@@ -63,36 +55,39 @@ export default function FilesDragAndDrop({onUpload, formats, disabled}: FilesDra
           return;
         }
   
-        console.log(files);
-        if (formats && files.some((file) => !formats.some((format) => file.type.endsWith(format.toLowerCase())))) {
-        
+        if (formats && files.some((file) => !formats.some((format) => file.type.endsWith(format.toLowerCase())))) {      
           console.log(`Only following file formats are acceptable: ${formats.join(', ')}`);
           return;
         }
 
         onUpload(files[0])
       }
-
+ 
       useEffect(() => {
-        if (dropRef.current) {
-            dropRef.current.addEventListener('dragover', handleDragOver);
-            dropRef.current.addEventListener('drop', handleDrop);
-            dropRef.current.addEventListener('dragenter', handleDragEnter);
-            dropRef.current.addEventListener('dragleave', handleDragLeave);
-        }
+        // if (dropRef.current) {
+        //     dropRef.current.addEventListener('dragover', handleDragOver);
+        //     dropRef.current.addEventListener('drop', handleDrop);
+        //     dropRef.current.addEventListener('dragenter', handleDragEnter);
+        //     dropRef.current.addEventListener('dragleave', handleDragLeave);
+        // }
       }, []);
 
     return (
     <button 
+        onDragOver={handleDragOver}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
         disabled={disabled}
         onClick={() => {fileInputRef.current?.click()}}
         ref={dropRef} 
-        className="transition-colors duration-300 ease-in-out group cursor-pointer
+        className={`transition-colors duration-300 ease-in-out group cursor-pointer
          hover:bg-sky-500/5 relative w-[300px] h-[200px] p-10 flex items-center justify-center 
-         flex-col flex-nowrap text-2xl text-davy-gray border-dashed border-light-gray 
-         rounded-sm border-2 text-center disabled:bg-gray-200 disabled:cursor-default disabled:text-gray-400 disabled:pointer-events-none"
+         flex-col flex-nowrap text-2xl text-davy-gray border-dashed border-light-gray
+         ${dragging ? 'bg-sky-500/5' : 'bg-none'} 
+         rounded-sm border-2 text-center disabled:bg-gray-200 disabled:cursor-default disabled:text-gray-400 disabled:pointer-events-none`}
     >
-        <div>
+        <div className="pointer-events-none">
             <span className="mb-2 text-xl">
               Drop or Choose a file 
             </span>
@@ -108,7 +103,7 @@ export default function FilesDragAndDrop({onUpload, formats, disabled}: FilesDra
         <span
             role="img"
             aria-label="emoji"
-            className="mt-[20px] text-xl"
+            className="pointer-events-none mt-[20px] text-xl"
         >
  
             <svg className="group-hover:fill-sky-600 transition-colors duration-300 ease-in-out fill-gray-400" fill="#000000" height="40" width="40" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +118,6 @@ export default function FilesDragAndDrop({onUpload, formats, disabled}: FilesDra
                 </g>
             </svg>
         </span>
-        <div ref={overlayRef} className={`bg-sky-500/50 w-full h-full top-0 left-0 absolute ${dragging ? 'block' : 'hidden'}`}/>
     </button>
     );
 }
