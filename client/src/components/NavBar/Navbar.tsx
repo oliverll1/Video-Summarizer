@@ -84,7 +84,7 @@ export default function Navbar() {
                 className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white"
               >
                 <Image
-                  src="https://i.pravatar.cc/40?img=35"
+                  src="https://i.pravatar.cc/40?img=47"
                   alt="user name"
                   title="user name"
                   width="40"

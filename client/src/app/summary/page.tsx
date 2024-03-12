@@ -9,13 +9,15 @@ export default function Summary() {
   const [processing, setProcessing] = useState(false);
 
   const handleUpload =  async (file: File) => {
+   
     if (file) { 
       const formData = new FormData();
       formData.append('audioFile', file);
       setProcessing(true);
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/summary/add`, {
+        console.log(file);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transcript/add`, {
           method: 'POST',
           body: formData
         });

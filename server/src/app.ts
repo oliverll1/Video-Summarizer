@@ -1,8 +1,10 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require("cors");
+import express from "express";
+import dotenv  from "dotenv";
+import cors from "cors";
+import bodyParser from 'body-parser';
+
 const app = express();
-const bodyParser = require('body-parser');
+
 
 dotenv.config();
 
@@ -14,12 +16,8 @@ app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:100
 
 const port = process.env.PORT;
 
-app.get('/api', (req, res) => {
-  res.send('Hello');
-});
-
-const summaryRoutes = require("./routes/summaryRoute");
-app.use("/api/summary", summaryRoutes);
+const transcribeRoutes = require("./routes/transcriptRoutes");
+app.use("/api/transcript", transcribeRoutes);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

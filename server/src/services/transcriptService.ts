@@ -1,7 +1,5 @@
-const speech = require('@google-cloud/speech');
+import speech from '@google-cloud/speech';
 const credentials = require(process.env.speech_to_text_credentials_path); // Imports google service account keys
-const dotenv = require('dotenv');
-dotenv.config();
 
 type AudioFile = {
   fieldname: string,
@@ -12,13 +10,13 @@ type AudioFile = {
   size: number
 }
 
-const transcribeAudioFile = async (audioFile: AudioFile): Promise<string> => {
+export const transcribeAudioFile = async (audioFile: AudioFile): Promise<string> => {
   console.log("transcribing...");
 
   const client = new speech.SpeechClient({ credentials });
   const file = audioFile; 
   const config = {
-    encoding: 'FLAC',
+    encoding: 'FLAC' as const,
     languageCode: 'en-US',
     audioChannelCount: 2,
     enableSeparateRecognitionPerChannel: false
@@ -47,8 +45,3 @@ const transcribeAudioFile = async (audioFile: AudioFile): Promise<string> => {
     throw err;
   }
 }
-
-module.exports = {
-  transcribeAudioFile
-};  
-  

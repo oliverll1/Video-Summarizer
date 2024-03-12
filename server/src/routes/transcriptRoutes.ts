@@ -1,8 +1,8 @@
-const express = require("express");
+import express from "express";
+import { getSummary, addSummary } from "../controllers/transcriptController";
+import multer from 'multer';
 const router = express.Router();
-const { getSummary, addSummary } = require("../controllers/summaryController");
 
-const multer = require('multer');
 
 // Set up Multer to handle file uploads
 const storage = multer.memoryStorage(); // Store file in memory (you can customize this based on your needs)

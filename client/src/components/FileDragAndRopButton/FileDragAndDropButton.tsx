@@ -63,15 +63,7 @@ export default function FilesDragAndDropButton({onUpload, formats, disabled}: Fi
         onUpload(files[0])
       }
  
-      useEffect(() => {
-        // if (dropRef.current) {
-        //     dropRef.current.addEventListener('dragover', handleDragOver);
-        //     dropRef.current.addEventListener('drop', handleDrop);
-        //     dropRef.current.addEventListener('dragenter', handleDragEnter);
-        //     dropRef.current.addEventListener('dragleave', handleDragLeave);
-        // }
-      }, []);
-
+  
     return (
     <button 
         onDragOver={handleDragOver}
